@@ -17,17 +17,19 @@ Original Image            |  Example answer | Final answer
 
 ## Methodolgy
 
-I broke down my approach into 3 main steps: 
+My methodology was seperated into three main steps: 
 
-1) Filter the image to detect the cones:
-    - I did this by selecting a specific range of rgb values that matched the color of the cones, and applied a filter to look for any pixels that matched the color.
-    - I then converted this image to grayscale in order to make computation more efficient later.
+1) Find the proper HSV values to isolate the color of the cones:
+    - I created 3 sliders changing the HSV values on a continually updating mask of the original image
+    - By changing the values on the slider, I could find the best HSV values to mask the image and remove all other colors except the cones
     
-2) To use object detection to select the cones and get rid of background noise:
-    - I used the built in object detection algorithm in OpenCV to detect only the cones in the image.
-    - I created a new image and selected only the objects that had a relatively large area. (gets rid of random objects detected in the background)
+2) Mask the image and find the top and bottom points for the two lines of cones:
+    - Using the HSV values I found, I created a black and white mask of the image
+    - I split the image in half to isolate each the two lines of cones
+    - Processing each half of the image as an array, I found the top-most and bottom-most non-zero cell in the arrays. 
+        - Black cells have a value of 0, so any non-zero cell would be a cone pixel in the black-and-white masked image
     
 3) Drew a line that went through each column of cones:
-    - I used the object detection data to calculate the center location of each detected cone on the image. 
-    - I used this data to make a linear regression model that goes through the cones. 
-    - I calculated the top and bottom coordinates of the lines and used OpenCV to plot the lines on the image.
+    - Using the top and bottom most pixels on both sides, I found the slope of each line of cones
+    - I used those slopes to calculate the continuation of each line of cones until they reached the sides of the image
+    - Using the new coordinates I found, I drew lines on the original image, producing my answer.png
