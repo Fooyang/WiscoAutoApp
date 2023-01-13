@@ -33,3 +33,11 @@ My methodology was seperated into three main steps:
     - Using the top and bottom most pixels on both sides, I found the slope of each line of cones
     - I used those slopes to calculate the continuation of each line of cones until they reached the sides of the image
     - Using the new coordinates I found, I drew lines on the original image, producing my answer.png
+
+## Scrapped attempts
+
+A few things I tried and ultimately decided not to use were:
+
+1) Isolating a cone in the image and using Matplotlib to find the color distribution of the cone, in attempt to find the perfect value to threshold the original image
+2) Using sklearn to create a linear regression of the cones instead of calculating the slope by hand
+    - Required the use of bounding rectangles around each cone to create data points for the linear regression, and I decided it wasn't worth it in the end
